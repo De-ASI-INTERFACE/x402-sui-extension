@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: 'Please cite as below if using x402-Sui Extension.'
+title: 'x402-Sui: HTTP 402 Payment-Gated Routing on Sui'
+version: 1.0.0
+date-released: '2026-07-09'
+type: software
+authors:
+  - family-names: Patterson
+    given-names: Richard
+    alias: De-ASI-INTERFACE
+    country: US
+repository-code: 'https://github.com/De-ASI-INTERFACE/x402-sui-extension'
+license: MIT
+abstract: >-
+  x402 HTTP 402 payment-gated routing for Sui Move VM. Object-centric Coin<T>
+  payment gates, DeepBook v3 CLOB routing, zkLogin authorization, epoch-based
+  expiry, object ID replay prevention, Lean 4 formal verification.
+keywords: [sui, move, x402, http-402, deepbook, zk-login, coin, lean4, richard-patterson]
