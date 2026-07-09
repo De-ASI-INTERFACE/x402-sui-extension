@@ -1,15 +1,3 @@
-# =============================================================
-# Lean 4 + Mathlib Build and Verify
-# Author: Richard Patterson (@De-ASI-INTERFACE)
-#
-# lean-action@v1 (v1.5.0) handles everything:
-#   - elan install + toolchain pin from lean-toolchain
-#   - .lake cache restore/save (actions/cache/restore|save@v5)
-#     keyed on OS + arch + lean-toolchain + lake-manifest.json
-#   - lake exe cache get  (Mathlib pre-built oleans from
-#     cache.lean-lang.org — mathlib4 v4.14.0)
-#   - lake build
-# =============================================================
 name: Lean 4 + Mathlib Build and Verify
 
 on:
@@ -26,6 +14,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install Elan + Lean toolchain
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --no-modify-path
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Generate lake-manifest.json
+        run: lake update
 
       - name: Build with lean-action
         uses: leanprover/lean-action@v1
