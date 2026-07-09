@@ -2,15 +2,14 @@
 # Lean 4 + Mathlib Build and Verify
 # Author: Richard Patterson (@De-ASI-INTERFACE)
 #
-# Uses leanprover/lean-action@v2 which:
-#   - Installs elan and the toolchain pinned in lean-toolchain
-#   - Runs `lake exe cache get` to pull pre-built Mathlib oleans
-#     from cache.lean-lang.org (reduces cold build from 60+ min
-#     to ~2-4 min for mathlib4 v4.14.0)
-#   - Runs `lake build` to compile the project
-#
-# Additional actions/cache steps persist .lake/packages and
-# .lake/build across runs so subsequent pushes are near-instant.
+# lean-action@v2 handles everything:
+#   - elan install + toolchain pin from lean-toolchain
+#   - .lake cache restore/save (actions/cache/restore|save@v5)
+#     keyed on OS + arch + lean-toolchain + lake-manifest.json
+#   - lake exe cache get  (Mathlib pre-built oleans from
+#     cache.lean-lang.org — mathlib4 v4.14.0)
+#   - lake build
+# No external cache step is needed or safe to add alongside it.
 # =============================================================
 name: Lean 4 + Mathlib Build and Verify
 
@@ -28,16 +27,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Cache Lake packages and build artefacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            .lake/packages
-            .lake/build
-          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
-          restore-keys: |
-            lake-${{ runner.os }}-
 
       - name: Build with lean-action
         uses: leanprover/lean-action@v2
